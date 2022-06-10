@@ -1,6 +1,8 @@
 import { GiBroccoli, GiNotebook } from 'react-icons/gi';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getDatabase, ref, set, onChildAdded, get } from 'firebase/database';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../../components/button';
 import Input from '../../components/input';
@@ -11,7 +13,9 @@ import styles from '../../styles/pages/inventory.module.scss';
 
 const OrdersPage = ({ firebaseApp }) => {
   const router = useRouter();
+  const db = getDatabase(firebaseApp);
   const [ addModalVisible, setAddModalVisible ] = useState(false);
+  const [ orders, setOrders ] = useState([]);
   
   const updateAddOrderModal = () => {
     setAddModalVisible((prevState) => !prevState);
@@ -20,6 +24,23 @@ const OrdersPage = ({ firebaseApp }) => {
   const goToLink = (href) => {
     router.push(href);
   };
+
+  const addOrderToList = (order) => {
+    setOrders((prevState) => {
+      return [ ...prevState, order ];
+    });
+  };
+
+  useEffect(() => {
+    const ordersRef = ref(db, 'orders/');
+    const orderSub = onChildAdded(ordersRef, (data) => {
+      addOrderToList(data.val());
+    });
+
+    return () => {
+      orderSub();
+    };
+  }, []);
     
   return (
     <>
@@ -56,7 +77,18 @@ const OrdersPage = ({ firebaseApp }) => {
                   <li>Total</li>
                 </ul>
               </div>
-              <div className={styles.tableContent}></div>
+              <div className={styles.tableContent}>
+                {orders.map((o, idx) => {
+                  return (
+                    <ul key={idx}>
+                      <li>{o.name}</li>
+                      <li>{o.product}</li>
+                      <li>{o.quantity}</li>
+                      <li>{o.total}</li>
+                    </ul>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -65,13 +97,47 @@ const OrdersPage = ({ firebaseApp }) => {
   );
 };
 
-const AddOrderForm = ({ updateModalState }) => {
+const AddOrderForm = ({ updateModalState, firebaseApp }) => {
+  const [ name, setName ] = useState('');
+  const [ product, setProduct ] = useState('');
+  const [ quantity, setQuantity ] = useState(0);
+  const [ total, setTotal ] = useState(1);
+
+  const db = getDatabase(firebaseApp);
+
+  const inputUpdate = (e, name) => {
+    const updateFuncObj = {
+      'name'     : setName,
+      'product'  : setProduct,
+      'quantity' : setQuantity
+    };
+    
+    updateFuncObj[name](e.target.value);
+  };
+
+  const addOrder = () => {
+    get(ref(db, `products/${product.toLowerCase()}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        set(ref(db, 'orders/' + uuidv4()), {
+          name,
+          product,
+          quantity,
+          total : parseInt(snapshot.val().price) * parseInt(quantity)
+        });
+      } else {
+        alert('No existe un producto con ese nombre.');
+      }
+    });
+    
+    updateModalState();
+  };
+
   return (
     <div>
-      <Input type='text' placeholder='Cliente' />
-      <Input type='text' placeholder='Producto' />
-      <Input type='text' placeholder='Cantidad' />
-      <Button text='Agregar' />
+      <Input name='name' type='text' placeholder='Cliente' updateFunction={inputUpdate}/>
+      <Input name='product' type='text' placeholder='Producto' updateFunction={inputUpdate}/>
+      <Input name='quantity' type='text' placeholder='Cantidad' updateFunction={inputUpdate}/>
+      <Button text='Agregar' action={addOrder}/>
       <Button text='Cancelar' type='cancel' action={updateModalState}/>
     </div>
   );

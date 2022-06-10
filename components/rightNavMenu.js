@@ -25,7 +25,7 @@ const RightNavMenu = ({ firebaseApp }) => {
     });
   
     return () => {
-      authSubscriber = null;
+      authSubscriber();
     };
   }, []);
   

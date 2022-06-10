@@ -8,6 +8,10 @@
     border-radius: 10px;
 }
 
+.btn:disabled {
+    background-color: hsl(0,0,80);
+}
+
 
 .cancel {
     background-color: white;
