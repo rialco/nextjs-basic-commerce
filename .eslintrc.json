@@ -1,0 +1,33 @@
+{
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "indent": ["error", 2],
+    "max-len": ["error", { "code": 100 }],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "jsx-quotes": ["error", "prefer-single"],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "no-irregular-whitespace": ["error", { "skipStrings" : true, "skipComments": true }],
+    "func-call-spacing": ["error", "never"],
+    "computed-property-spacing": ["error", "never"],
+    "space-in-parens": ["error", "never"],
+    "padded-blocks": ["error", "never"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "no-multi-spaces": "error",
+    "no-whitespace-before-property": "error",
+    "brace-style": "error",
+    "key-spacing": ["error", { 
+      "align": { "beforeColon" : true, "afterColon": true, "on": "colon" },
+      "singleLine": { "beforeColon": true, "afterColon": true }, 
+      "multiLine": { "beforeColon": true, "afterColon": true } 
+    }],
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "always"],
+    "linebreak-style": ["error", "unix"]
+  }
+}

@@ -1,0 +1,20 @@
+$container-width: 1200px;
+
+
+@mixin full-width-flex {
+    display: flex;
+    width: 100%;
+}
+
+@mixin contained-flex {
+    display: flex;
+    width: $container-width;
+}
+
+@mixin space-between {
+    justify-content: space-between;
+}
+
+@mixin align-center {
+    align-items: center;
+}

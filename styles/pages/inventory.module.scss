@@ -1,0 +1,93 @@
+@import '../utils.scss';
+
+.dashboard {
+    @include full-width-flex;
+}
+
+.leftPanel {
+    @include full-width-flex;
+    background-color: hsl(250, 10, 20);
+    min-height: 90vh;
+    width: 20%;
+    justify-content: flex-end;
+    padding-top: 40px;
+    
+    ul {
+        list-style-type: none;
+        width: 100%;
+
+        li {
+            transition: 0.1s ease;
+            display: block;
+            font-size: 1.2em;
+            font-weight: 600;
+            padding-right: 40px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-align: right;
+            border-bottom: 1px solid hsl(0,0,95);
+            cursor: pointer;
+            color: white;
+
+            svg {
+                font-size: 1.2em;
+                margin-right: 6px;
+            }
+        }
+
+        li:hover {
+            background-color: hsl(71, 86, 95);
+            color: black;
+        }
+    }
+}
+
+.rightPanel {
+    min-height: 90vh;
+    width: 100%;
+    background-color: hsl(0,0,95);
+}
+
+.inventoryPanel {
+    width: 90%;
+    height: 95%;
+    background-color: white;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 40px;
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    button {
+        text-align: left;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 0.85em;
+    }
+
+    .table {
+        margin-top: 40px;
+        width: 90%;
+
+        .tableHeaders {
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: space-between;
+
+                li {
+                    display: block;
+                    font-weight: 600;
+                    background-color: hsl(0,0,95);
+                    width: 100%;
+                    padding: 10px 20px;
+                }
+            }
+        }
+    }
+}

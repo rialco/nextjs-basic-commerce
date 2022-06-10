@@ -1,0 +1,30 @@
+@import '../utils.scss';
+
+.heroContainer {
+    @include full-width-flex;
+}
+
+.hero {
+    margin: auto;
+    @include contained-flex;
+    @include align-center;
+}
+
+.column {
+    width: 50%;
+}
+
+.title {
+    font-size: 4em;
+    line-height: 1em;
+    margin-bottom: 20px;
+    font-weight: 900;
+}
+
+.paragraph {
+    margin-bottom: 20px;
+}
+
+.form {
+    margin-bottom: 20px;
+}
