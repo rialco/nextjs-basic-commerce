@@ -118,11 +118,16 @@ const AddOrderForm = ({ updateModalState, firebaseApp }) => {
   const addOrder = () => {
     get(ref(db, `products/${product.toLowerCase()}`)).then((snapshot) => {
       if (snapshot.exists()) {
+        const producto = snapshot.val();
         set(ref(db, 'orders/' + uuidv4()), {
           name,
           product,
           quantity,
           total : parseInt(snapshot.val().price) * parseInt(quantity)
+        });
+        set(ref(db, 'products/' + product.toLowerCase()), {
+          ...producto,
+          inventory : parseInt(snapshot.val().inventory) - parseInt(quantity)
         });
       } else {
         alert('No existe un producto con ese nombre.');
